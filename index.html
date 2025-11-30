@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>  
+            body{
+                background-color: #89CFF0;
+            }
+    </style>
+</head>
+<body>
+
+    <div class="conte">
+        <h1 style="color: red; font-size: 70px">ADIVINHE O NUMERO DO JOGO</h1> 
+        <h1>Selecione um nivel de jogo</h1>
+        <button id="facil">Fácil</button>
+        <button id="Normal">Normal</button>
+        <button id="Dificil">Dificil</button>
+    </div>
+
+    <div id="jogo" style="display:none;">
+        <h2> Em qual numero eu estou pensando?</h2>
+        <p id="status">Escolha um Número!</p>
+        <div id="grade"></div>
+        <button id="Desistir">Desistir</button>
+    </div>
+    
+
+</body>
+
+<script>
+const grade = document.querySelector('#grade');
+const jogo = document.querySelector('#jogo');
+const statustxt = document.querySelector('#status');
+
+let tentativas = 0;
+let numeroCerto = 0;
+
+function iniciarJogo(ntotal, ntentativas){
+    grade.innerHTML = ""
+    tentativas = ntentativas;
+    numeroCerto = Math.floor(Math.random() * ntotal) + 1;
+
+atualtizarStatus();
+jogo.style.display = "block";
+
+    for (let i = 1; i<= 50; i++) {
+        const btn = document.createElement('button') 
+        btn.classList.add('num-botao');
+    
+        btn.textContent = String(i).padStart(2, '0');
+        btn.onclick = () => escolherNumero(i, btn);
+        grade.appendChild(btn);
+    }
+}    
+
+function escolherNumero(valor, botao) {
+    botao.disabled = true;
+
+    tentativas--;
+    if (valor === numeroCerto) {
+        alert("Parabéns! Você acertou!!! Tu é foda!!!");
+        desabilitarTodos();
+        setTimeout(() => location.reload(), 1000); 
+    return;
+        return;
+    }
+    if(tentativas <= 0) {
+        statustxt.textContent = "Você perdeu seu jegue! O numero era " + numeroCerto;
+        desabilitarBotao();
+        setTimeout(() => location.reload(), 1000);
+        return;
+    }
+    atualtizarStatus();
+}
+function atualtizarStatus() {
+ if (tentativas === 1) {
+    alert("Você só tem mais uma escolha!");
+ } else {
+    statustxt.textContent = `Você ainda tem ${tentativas} jogadas!`;
+    }
+}
+function desabilitarBotao() {
+    document.querySelectorAll('.num-botao')
+}
+document.querySelector('#facil').onclick = () => iniciarJogo(50, 10);
+document.querySelector('#Normal').onclick = () => iniciarJogo(50, 5);
+document.querySelector('#Dificil').onclick = () => iniciarJogo(50, 3);
+document.querySelector('#Desistir').onclick = () => {
+    alert("Você desistiu!");
+    Desistir();
+    setTimeout(() => location.reload(), 1000);
+};
+
+</script>
+</html>
